@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="col-md-6 offset-md-3 mt-5">
+        <div class="card shadow-sm p-2 m-2">
+            <h1>Add Vehicle</h1>
+            <form method="POST" action="" class="p-2">
+                {% csrf_token %}
+                {% if form.errors %}
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    Your Form Has Errors
+                    {% for field in form %}
+                        {% if field.errors %}
+                            {{ field.errors }}
+                        {% endif %}
+                    {% endfor %}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endif %}
+                {{ form.as_p }}
+                {% comment %} <input class="form-control" placeholder="Super sport M4 BMW" name="juice" /> {% endcomment %}
+                <button type="submit" class="btn btn-secondary m-2">Add</button>
+            </form>
+        </div>
+    </div>
+{% endblock content %}
+  

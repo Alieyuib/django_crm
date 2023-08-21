@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+{% block content %}
+    <section style="background-color: #fff;">
+        <div class="container py-5">
+          <div class="row">
+            <div class="col-lg-4">
+              <div class="card shadow-sm mb-4">
+                <div class="card-body text-center">
+                  <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar"
+                    class="rounded-circle img-fluid" style="width: 150px;">
+                  <h5 class="my-3">{{vehicle.first_name}} {{vehicle.last_name}}</h5>
+                  <p class="text-muted mb-1">{{vehicle.phone}}</p>
+                  <h5 class="mb-4 text-success">{{vehicle.vin}}</h5>
+                  <div class="d-flex justify-content-center mb-2">
+                    <a href="{% url 'vehicles' %}" class="btn btn-outline-dark ms-1">Go back</a>
+                    <a href={} class="btn btn-outline-success ms-1">Edit Profile</a>
+                    <a href="{% url 'owner_vehicle' vehicle.id %}" class="btn btn-outline-primary ms-1">New Vehicle</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-8">
+              <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <p class="mb-0">Full Name</p>
+                    </div>
+                    <div class="col-sm-9">
+                      <p class="text-muted mb-0">{{vehicle.first_name}} {{vehicle.last_name}}</p>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <p class="mb-0">Email</p>
+                    </div>
+                    <div class="col-sm-9">
+                      <p class="text-muted mb-0">example@example.com</p>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <p class="mb-0">Phone</p>
+                    </div>
+                    <div class="col-sm-9">
+                      <p class="text-muted mb-0">{{vehicle.phone}}</p>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <p class="mb-0">Profile ID</p>
+                    </div>
+                    <div class="col-sm-9">
+                      <p class="text-muted mb-0">{{vehicle.vin}}</p>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <p class="mb-0">Address</p>
+                    </div>
+                    <div class="col-sm-9">
+                      <p class="text-muted mb-0">{{vehicle.address}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+                <div class="col-md-12">
+                    <div class="card shadow-sm">
+                        <h6 class="text-center text-dark p-2">Cars owned by {{vehicle.first_name}} {{vehicle.last_name}}</h6>
+                        <table class="table-hover table">
+                            <thead>
+                                <tr>
+                                    <th>VIN</th>
+                                    <th>Model</th>
+                                    <th>Color</th>
+                                    <th>Type</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for car in cars %}
+                                    <tr>
+                                        <td>{{car.vin}}</td>
+                                        <td>{{car.model}}</td>
+                                        <td>{{car.color}}</td>
+                                        <td>{{car.type}}</td>
+                                        <td class="{% if car.status == True %}text-success {% else %} text-danger {% endif %}">
+                                            {% if car.status == True %}
+                                                Checked In.
+                                            {% else %}
+                                                Checked Out.
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    {% if car.status == False %}
+                                                        <form method="POST" action="{% url 'check_in' %}">
+                                                            {% csrf_token %}
+                                                            <input type="hidden" name="vehicle_id" value="{{vehicle.id}}">
+                                                            <button class="btn btn-sm btn-success" type="submit" name="car_id" value="{{car.id}}">
+                                                                Check In
+                                                            </button>
+                                                        </form>
+                                                    {% elif car.status == True %}
+                                                        <form method="POST" action="{% url 'check_out' %}">
+                                                            {% csrf_token %}
+                                                            <input type="hidden" name="vehicle_id" value="{{vehicle.id}}">
+                                                            <button class="btn btn-sm btn-danger" type="submit" name="car_id" value="{{car.id}}">
+                                                                Check Out
+                                                            </button>
+                                                        </form>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+          </div>
+        </div>
+      </section>
+{% endblock content %}
+  

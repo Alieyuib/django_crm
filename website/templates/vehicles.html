@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="col-md-12 p-2 mt-4">
+        {% if user.is_authenticated %}
+            <h3 class="text-center m-2">Registered Vehicles</h3>
+            <div class="col-md-8 offset-md-2 mb-4 mt-2">
+                <div class="card shadow-sm p-2">
+                    <form method="POST" class="form-inline">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-10">
+                                <input type="text" class="form-control" name="q" placeholder="KMC-39BJ, ABJ-XXX, NSR-XXX....">
+                            </div>
+                            <div class="col-md-2">
+                                <button type="submit" class="btn btn-sm mt-1 btn-success">Search</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="row">
+                {% if vehicles %}
+                    <table class="table table-bordered mt-2">
+                        <thead>
+                            <th>VIN</th>
+                            <th>MODEL</th>
+                            <th>TYPE</th>
+                            <th>COLOR</th>
+                            <th>STATUS</th>
+                            <th>Action</th>
+                        </thead>
+                        <tbody>
+                            {% for vehicle in vehicles %}
+                                <tr>
+                                    <td>{{vehicle.vin}}</td>
+                                    <td>{{vehicle.model}}</td>
+                                    <td>{{vehicle.type}}</td>
+                                    <td>{{vehicle.color}}</td>
+                                    <td>
+                                        {% if vehicle.status == True %}
+                                            Checked In.
+                                        {% elif vehicle.status == False %}
+                                            Checked Out.    
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <a class="btn btn-sm btn-success" href={% url 'vehicle' vehicle.id %}>Data</a>
+                                            </div>
+                                            <div class="col-md-6">
+                                                {% if vehicle.status == False %}
+                                                    <form method="POST" action="{% url 'check_in' %}">
+                                                        {% csrf_token %}
+                                                        <button class="btn btn-sm btn-success" type="submit" name="vehicle_id" value="{{vehicle.id}}">
+                                                            Check In
+                                                        </button>
+                                                    </form>
+                                                {% elif vehicle.status == True %}
+                                                    <form method="POST" action="{% url 'check_out' %}">
+                                                        {% csrf_token %}
+                                                        <button class="btn btn-sm btn-danger" type="submit" name="vehicle_id" value="{{vehicle.id}}">
+                                                            Check Out
+                                                        </button>
+                                                    </form>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        {% comment %} <a class="btn btn-danger" href={% url 'delete_vehicle' vehicle.id %}>Delete vehicle</a> {% endcomment %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p class="text-danger text-center">No vehicles available...</p>
+                {% endif %}
+            </div>
+        {% else %}
+        <div class="col-md-4 offset-md-4" style="margin-top: 100px;">
+            <div class="card shadow-sm">
+                <H3 class="p-2 text-center  ">Login</H3>
+                <form method="POST" action="{% url 'home' %}" class="p-2">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                    <input type="text" class="form-control" name="username" placeholder="Username" required>
+                    </div>
+                    <div class="mb-3">
+                    <input type="password" class="form-control" name="password" placeholder="Password" required>
+                    </div>
+                    <button type="submit" class="btn btn-secondary">Login</button>
+                </form>
+            </div>
+        </div>
+        {% endif %}
+        
+    </div>
+{% endblock content %}

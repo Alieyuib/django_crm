@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="col-md-12 p-2 mt-4">
+        <div class="card">
+            <h5 class="card-header">{{ customer.first_name }} {{ customer.last_name }}</h5>
+            <div class="card-body">
+              <h6 class="card-title"><strong>Phone number</strong> {{ customer.phone }}</h6>
+              <h6 class="card-title"><strong>Email address</strong> {{ customer.email }}</h6>
+              <h6 class="card-title"><strong>Address</strong> {{ customer.address }}</h6>
+              <h6 class="card-title"><strong>State</strong> {{ customer.state }}</h6>
+              <h6 class="card-title"><strong>City</strong> {{ customer.city }}</h6>
+              <h6 class="card-title"><strong>Zip code</strong> {{ customer.zipcode }}</h6>
+              {% comment %} <p class="card-text">With supporting text below as a natural lead-in to additional content.</p> {% endcomment %}
+              <a href="{% url 'home' %}" class="btn btn-primary">Go back</a>
+              <a href="{% url 'update_customer' customer.id %}" class="btn btn-secondary">Change record</a>
+            </div>
+          </div>
+    </div>
+{% endblock content %}

@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+{% block content %}
+    {% comment %} <div class="col-md-6 offset-md-3 mt-5">
+        <div class="card shadow-sm p-2 m-2">
+            <h3 class="text-center">{{vehicle.vin}}</h3>
+            <h6 class="text-darkl p-2">Personal information</h6>
+            <hr style="margin-top: 0px" />
+            <p class="p-2">
+                <span>
+                    <strong class="text-success">First Name:</strong>
+                    <span>{{vehicle.first_name}}</span>
+                </span>
+                <span class="mx-5">
+                    <strong class="text-success">Last Name:</strong>
+                    <span>{{vehicle.last_name}}</span>
+                </span>
+            </p>
+            <h6 class="text-darkl p-2">Vehicle information</h6>
+            <hr style="margin-top: 0px" />
+            <p class="p-2">
+                <span>
+                    <strong class="text-success">VIN:</strong>
+                    <span>{{vehicle.vin}}</span>
+                </span>
+                <span class="mx-5">
+                    <strong class="text-success">Model:</strong>
+                    <span>{{vehicle.model}}</span>
+                </span>
+            </p>
+            <p class="p-2">
+                <span>
+                    <strong class="text-success">Type:</strong>
+                    <span>{{vehicle.type}}</span>
+                </span>
+                <span class="mx-5">
+                    <strong class="text-success">Color:</strong>
+                    <span>{{vehicle.color}}</span>
+                </span>
+                <span class="mx-2">
+                    <strong class="text-success">Status:</strong>
+                    <span>
+                        {% if vehicle.status == True %}
+                            Checked In.
+                        {% elif vehicle.status == False %}
+                            Checked Out.    
+                        {% endif %}
+                    </span>
+                </span>
+            </p>
+            <div class="row">
+                <div class="col-md-12">
+                    <a href="{% url 'vehicles' %}" class="btn btn-sm btn-primary">Go back</a>
+                    <a href="{% url 'vehicle_update' vehicle.id %}" class="btn btn-sm btn-secondary">Change data</a>
+                    <a href="{% url 'vehicle_delete' vehicle.id %}" class="btn btn-sm btn-danger">Delete data</a>
+                    {% if vehicle.status == False %}
+                        <form method="POST" action="{% url 'check_in' %}">
+                            {% csrf_token %}
+                            <button class="btn btn-sm btn-success" type="submit" name="vehicle_id" value="{{vehicle.id}}">
+                                Checked in
+                            </button>
+                        </form>
+                    {% elif vehicle.status == True %}
+                        <form method="POST" action="{% url 'check_out' %}">
+                            {% csrf_token %}
+                            <button class="btn btn-sm btn-danger" type="submit" name="vehicle_id" value="{{vehicle.id}}">
+                                Checked out
+                            </button>
+                        </form>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div> {% endcomment %}
+    <section style="background-color: #fff;">
+        <div class="container py-5">
+          <div class="row">
+            <div class="col-lg-4">
+              <div class="card shadow-sm mb-4">
+                <div class="card-body text-center">
+                  <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar"
+                    class="rounded-circle img-fluid" style="width: 150px;">
+                  <h5 class="my-3">{{user.first_name}} {{user.last_name}}</h5>
+                  <p class="text-muted mb-1">{{user.email}}</p>
+                  <p class="text-muted mb-4">{{user.address}}</p>
+                  <div class="d-flex justify-content-center mb-2">
+                    <a href="" class="btn btn-outline-success">Edit Profile</a>
+                    {% comment %} <a href="" class="btn btn-outline-primary ms-1">New Vehicle</a> {% endcomment %}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-8">
+              <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <p class="mb-0">Username</p>
+                    </div>
+                    <div class="col-sm-9">
+                      <p class="text-muted mb-0">{{user.username}}</p>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <p class="mb-0">Email</p>
+                    </div>
+                    <div class="col-sm-9">
+                      <p class="text-muted mb-0">{{user.email}}</p>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <p class="mb-0">Full Name</p>
+                    </div>
+                    <div class="col-sm-9">
+                      <p class="text-muted mb-0">{{user.first_name}} {{user.last_name}}</p>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <p class="mb-0">Mobile</p>
+                    </div>
+                    <div class="col-sm-9">
+                      <p class="text-muted mb-0">{{vehicle.phone}}</p>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <p class="mb-0">Address</p>
+                    </div>
+                    <div class="col-sm-9">
+                      <p class="text-muted mb-0">{{vehicle.address}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          </div>
+        </div>
+      </section>
+{% endblock content %}
+  

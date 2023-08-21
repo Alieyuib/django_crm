@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="col-md-12 p-2 mt-4">
+        <div class="card">
+            <h5 class="card-header">{{ item.name }}</h5>
+            <div class="card-body">
+              <h6 class="card-title"><strong>Price:</strong> ${{ item.price }}</h6>
+              <h6 class="card-title"><strong>Item Code:</strong> {{ item.code }}</h6>
+              <h6 class="card-title"><strong>Shop:</strong> {{ owner.username }}</h6>
+              {% comment %} <p class="card-text">With supporting text below as a natural lead-in to additional content.</p> {% endcomment %}
+              <a href="{% url 'items' %}" class="btn btn-secondary">Go back</a>
+              <a href="{% url 'edit_item' item.id %}" class="btn btn-primary">Update Item</a>
+            </div>
+          </div>
+    </div>
+{% endblock content %}
